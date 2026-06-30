@@ -2,27 +2,31 @@ import Link from "next/link";
 import * as React from "react";
 import { cn } from "@/lib/cn";
 
-type Variant = "primary" | "secondary" | "ghost";
+type Variant = "primary" | "secondary" | "ghost" | "light" | "outlineDark";
 type Size = "sm" | "md" | "lg";
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-xl font-medium whitespace-nowrap " +
+  "inline-flex items-center justify-center gap-2 rounded-pill font-medium whitespace-nowrap " +
   "transition-[transform,background-color,border-color,color,box-shadow] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] " +
   "active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent " +
   "disabled:pointer-events-none disabled:opacity-50";
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-accent text-accent-foreground shadow-soft hover:bg-accent-strong hover:shadow-lift",
+    "bg-accent text-accent-foreground shadow-soft hover:bg-accent-hover hover:shadow-lift",
   secondary:
-    "bg-surface text-foreground border border-border-strong hover:border-foreground/30 hover:bg-surface-muted",
-  ghost: "text-foreground hover:bg-surface-muted",
+    "bg-surface text-heading border border-hairline-strong shadow-soft hover:border-accent/40 hover:bg-warm",
+  ghost: "text-heading hover:bg-warm",
+  light:
+    "bg-white text-heading shadow-lift hover:bg-white/90",
+  outlineDark:
+    "border border-on-dark-hairline text-on-dark hover:bg-white/10",
 };
 
 const sizes: Record<Size, string> = {
-  sm: "h-9 px-3.5 text-sm",
-  md: "h-11 px-5 text-[0.95rem]",
-  lg: "h-12 px-[1.375rem] text-[1.05rem]",
+  sm: "h-9 px-4 text-sm",
+  md: "h-11 px-6 text-[0.95rem]",
+  lg: "h-[3.25rem] px-7 text-[1.05rem]",
 };
 
 type SharedProps = {

@@ -26,12 +26,14 @@ export async function POST(request: Request) {
     );
   }
 
-  console.info("[lead] new discovery-call request", {
+  console.info("[lead] new consult request", {
     name,
     email,
-    tier: body.tier ?? null,
-    contactMethod: body.contactMethod ?? null,
-    fromQuiz: Boolean(body.quizScore),
+    source: body.source ?? null,
+    focus: body.focus ?? null,
+    band: body.band ?? null,
+    service: body.service ?? null,
+    bottleneck: body.bottleneck ?? null,
     receivedAt: new Date().toISOString(),
   });
 

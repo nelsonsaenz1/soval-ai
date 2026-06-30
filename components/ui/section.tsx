@@ -1,13 +1,23 @@
 import * as React from "react";
 import { cn } from "@/lib/cn";
 
-type Tone = "default" | "muted" | "sand" | "contrast";
+type Tone =
+  | "default"
+  | "surface"
+  | "warm"
+  | "sand"
+  | "dark"
+  | "darkest"
+  | "meshCream";
 
 const tones: Record<Tone, string> = {
   default: "bg-background",
-  muted: "bg-surface-muted",
-  sand: "bg-surface-sand",
-  contrast: "bg-surface-contrast text-on-contrast",
+  surface: "bg-surface",
+  warm: "bg-warm",
+  sand: "bg-sand",
+  dark: "mesh-dark text-on-dark",
+  darkest: "bg-darkest text-on-dark",
+  meshCream: "mesh-cream",
 };
 
 export function Section({
@@ -24,7 +34,10 @@ export function Section({
   containerClassName?: string;
 }) {
   return (
-    <section id={id} className={cn("py-20 md:py-28", tones[tone], className)}>
+    <section
+      id={id}
+      className={cn("py-20 md:py-28", tones[tone], className)}
+    >
       <div className={cn("container-edge", containerClassName)}>{children}</div>
     </section>
   );
@@ -35,12 +48,14 @@ export function SectionHeader({
   title,
   description,
   align = "left",
+  onDark = false,
   className,
 }: {
   eyebrow?: string;
   title: React.ReactNode;
   description?: React.ReactNode;
   align?: "left" | "center";
+  onDark?: boolean;
   className?: string;
 }) {
   return (
@@ -51,10 +66,26 @@ export function SectionHeader({
         className,
       )}
     >
-      {eyebrow ? <span className="eyebrow">{eyebrow}</span> : null}
-      <h2 className="text-h2 font-semibold text-balance">{title}</h2>
+      {eyebrow ? (
+        <span className={cn("eyebrow", onDark && "eyebrow--on-dark")}>
+          {eyebrow}
+        </span>
+      ) : null}
+      <h2
+        className={cn(
+          "font-display text-h2 text-balance",
+          onDark ? "text-on-dark" : "text-heading",
+        )}
+      >
+        {title}
+      </h2>
       {description ? (
-        <p className="max-w-2xl text-lede text-pretty text-muted-foreground">
+        <p
+          className={cn(
+            "max-w-2xl text-lede text-pretty",
+            onDark ? "text-on-dark-secondary" : "text-secondary",
+          )}
+        >
           {description}
         </p>
       ) : null}

@@ -7,11 +7,13 @@
  */
 
 export type TrackEventName =
+  | "consult_clicked"
+  | "path_chosen"
+  | "service_viewed"
   | "quiz_started"
   | "quiz_completed"
-  | "tier_recommended"
-  | "book_call_clicked"
-  | "contact_form_submitted";
+  | "band_recommended"
+  | "lead_submitted";
 
 export type TrackPayload = Record<string, string | number | boolean | null>;
 

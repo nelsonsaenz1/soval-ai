@@ -1,43 +1,41 @@
-import { Button } from "@/components/ui/button";
+import * as React from "react";
 
-type Cta = { label: string; href: string };
-
+/**
+ * Generic inner-page hero. Warm mesh-cream band with eyebrow, serif headline,
+ * lede, optional meta row (e.g. price), and an actions slot for CTAs.
+ */
 export function PageHero({
   eyebrow,
   title,
   description,
-  primaryCta = { label: "Take the Agent Fit Quiz", href: "/quiz" },
-  secondaryCta = { label: "Book a Discovery Call", href: "/contact" },
+  meta,
+  actions,
 }: {
   eyebrow: string;
   title: string;
-  description: string;
-  primaryCta?: Cta | null;
-  secondaryCta?: Cta | null;
+  description?: string;
+  meta?: React.ReactNode;
+  actions?: React.ReactNode;
 }) {
   return (
-    <section className="border-b border-border bg-background">
-      <div className="container-edge py-16 md:py-24">
-        <div className="flex max-w-3xl flex-col gap-5">
+    <section className="mesh-cream border-b border-hairline">
+      <div className="container-edge py-16 md:py-20">
+        <div className="flex max-w-3xl flex-col">
           <span className="eyebrow">{eyebrow}</span>
-          <h1 className="text-h1 font-semibold text-balance">{title}</h1>
-          <p className="max-w-2xl text-lede text-pretty text-muted-foreground">
-            {description}
-          </p>
-          {(primaryCta || secondaryCta) && (
-            <div className="mt-2 flex flex-col gap-3 sm:flex-row">
-              {primaryCta ? (
-                <Button href={primaryCta.href} size="lg">
-                  {primaryCta.label}
-                </Button>
-              ) : null}
-              {secondaryCta ? (
-                <Button href={secondaryCta.href} size="lg" variant="secondary">
-                  {secondaryCta.label}
-                </Button>
-              ) : null}
+          <h1 className="mt-6 text-balance font-display text-h1 text-heading">
+            {title}
+          </h1>
+          {description ? (
+            <p className="mt-5 max-w-2xl text-pretty text-lede text-secondary">
+              {description}
+            </p>
+          ) : null}
+          {meta ? <div className="mt-6">{meta}</div> : null}
+          {actions ? (
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              {actions}
             </div>
-          )}
+          ) : null}
         </div>
       </div>
     </section>

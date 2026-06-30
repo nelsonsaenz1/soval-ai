@@ -1,0 +1,162 @@
+"use client";
+
+import * as React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { BRAND } from "@/lib/brand";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/cn";
+import { trackEvent } from "@/lib/analytics";
+
+export function Navbar() {
+  const pathname = usePathname();
+  const [open, setOpen] = React.useState(false);
+  const [scrolled, setScrolled] = React.useState(false);
+
+  React.useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const closeMenu = () => setOpen(false);
+
+  // Lock scroll while the mobile menu is open.
+  React.useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  return (
+    <header
+      className={cn(
+        "sticky top-0 z-50 transition-[background-color,border-color,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]",
+        scrolled || open
+          ? "border-b border-hairline bg-cream/85 backdrop-blur-md supports-[backdrop-filter]:bg-cream/70"
+          : "border-b border-transparent bg-transparent",
+      )}
+    >
+      <nav
+        className="container-edge flex h-16 items-center justify-between gap-4"
+        aria-label="Primary"
+      >
+        <Link
+          href="/"
+          className="font-display text-xl tracking-tight text-heading"
+          aria-label={`${BRAND.name} home`}
+        >
+          {BRAND.name}
+        </Link>
+
+        <div className="hidden items-center gap-1 lg:flex">
+          {BRAND.nav.map((item) => {
+            const href: string = item.href;
+            const active =
+              pathname === href || (href !== "/" && pathname.startsWith(href));
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "rounded-pill px-3.5 py-2 text-sm font-medium transition-colors duration-150",
+                  active
+                    ? "text-accent"
+                    : "text-secondary hover:text-heading hover:bg-warm",
+                )}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+        </div>
+
+        <div className="hidden items-center gap-2 lg:flex">
+          <Button href="/quiz" variant="ghost" size="sm">
+            {BRAND.quizCta.label}
+          </Button>
+          <Button
+            href={BRAND.navCta.href}
+            size="sm"
+            onClick={() => trackEvent("consult_clicked", { source: "nav" })}
+          >
+            {BRAND.navCta.label}
+          </Button>
+        </div>
+
+        <button
+          type="button"
+          className="inline-flex size-10 items-center justify-center rounded-pill text-heading hover:bg-warm lg:hidden"
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+          aria-label={open ? "Close menu" : "Open menu"}
+          onClick={() => setOpen((v) => !v)}
+        >
+          <MenuIcon open={open} />
+        </button>
+      </nav>
+
+      {open ? (
+        <div
+          id="mobile-menu"
+          className="lg:hidden border-t border-hairline bg-cream"
+        >
+          <div className="container-edge flex flex-col gap-1 py-4">
+            {BRAND.nav.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={closeMenu}
+                className="rounded-md px-3 py-2.5 text-base font-medium text-heading hover:bg-warm"
+              >
+                {item.label}
+              </Link>
+            ))}
+            <div className="mt-3 flex flex-col gap-2">
+              <Button href="/quiz" variant="secondary" size="md" onClick={closeMenu}>
+                {BRAND.quizCta.label}
+              </Button>
+              <Button
+                href={BRAND.navCta.href}
+                size="md"
+                onClick={() => {
+                  trackEvent("consult_clicked", { source: "nav_mobile" });
+                  closeMenu();
+                }}
+              >
+                {BRAND.navCta.label}
+              </Button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+    </header>
+  );
+}
+
+function MenuIcon({ open }: { open: boolean }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="size-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      aria-hidden="true"
+    >
+      {open ? (
+        <path d="M6 6l12 12M18 6L6 18" />
+      ) : (
+        <>
+          <path d="M3 7h18" />
+          <path d="M3 12h18" />
+          <path d="M3 17h18" />
+        </>
+      )}
+    </svg>
+  );
+}

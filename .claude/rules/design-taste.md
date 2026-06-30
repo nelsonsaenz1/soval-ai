@@ -1,45 +1,32 @@
-# Design taste — Nelson's Path
+# Design taste — [NAME TBD]
 
-The look: **Notion readability + Superhuman restraint + Apple lifestyle confidence + Stripe trust polish.** Warm, premium, discreet, simple. No neon-AI clichés, no robot imagery, no SaaS bloat.
+The look: **Notion readability + Superhuman restraint + Apple lifestyle confidence + Stripe trust polish.** Warm, premium, discreet, simple. No neon-AI clichés, no robot imagery, no SaaS bloat. We **replicate the MetaOrtho visual system** and translate it from healthcare to an AI concierge / operations studio.
 
 ## Visual system (implemented in `app/globals.css` via Tailwind v4 `@theme`)
 
-**Palette is matched to metaortho.com** (Nelson's sister brand) for a consistent house style.
+- **Backgrounds:** warm cream (`--color-background: #fbf8f5`), white surfaces, warm/sand muted panels (`#f5f0e8`, `#ede7db`). Dark sections use deep teal-navy (`--color-dark: #0a2633`, `--color-darkest: #061b24`).
+- **Ink:** near-black primary text (`rgba(0,0,0,.94)`), teal-navy headings (`--color-heading: #0a2633`), secondary `rgba(0,0,0,.80)`, muted `rgba(0,0,0,.55)`. On dark: `--color-on-dark*`.
+- **Accent:** a single **ocean blue** (`--color-accent: #2a6f97`, hover `#1e5a7d`, light `#e8f1f7`). Warm camel (`#c4976c`) and teal (`#2e7d7d`) are sparing secondaries. Used for CTAs, links, eyebrows, dots, prices. Flat, never a gradient glow.
+- **Type:** **DM Serif Display** for editorial headings (the `.font-display` / `font-serif` helper on display/h1/h2/h3/hero), **DM Sans** for body, labels, and eyebrows. Large, tight, negative-tracked display scale (`text-display`/`text-h1`/`text-h2`). Eyebrows are DM Sans uppercase, `tracking-[0.15em]`, ocean-blue, with a short leading hairline tick (`.eyebrow`). All numerics (prices, scores, step indices) use `.nums` (tabular).
+- **Radius:** locked scale — `rounded-sm/md/lg/xl` = 12/16/24/32px, `rounded-pill` = 9999px. Buttons and chips are pills; cards are `rounded-2xl` (32px).
+- **Elevation:** layered, **hue-tinted** shadows (teal-navy hue, never black) in `--shadow-soft/lift/raise/hero`. Cards rest on `soft`, lift to `lift` on hover.
+- **Hairlines** are tinted, not gray (`rgba(0,0,0,.08)`), and `border-on-dark-hairline` on dark panels. Connected panels use `gap-px`/`divide-y`.
+- **Glass + mesh:** `.glass-cream` (translucent warm white on light) and `.glass-dark` (Linear-style translucent panel on dark); `.mesh-dark` / `.mesh-cream` soft radial mesh gradients for hero, CTA, and dashboard surfaces.
+- **Imagery:** no robots, circuits, glowing brains, or fake SaaS dashboards. The hero "Your AI Operating System" mockup is editorial and explicitly labeled **Sample view** / **Illustrative**.
 
-- **Backgrounds:** warm cream (`--color-background: #fbf8f5`), white surfaces, warm/sand muted panels (`#f5f0e8`, `#ede7db`). Dark sections use deep teal-navy (`--color-surface-contrast: #0a2633`).
-- **Ink:** deep teal-navy text (`--color-foreground: #0a2633`), cool teal-slate for secondary, lighter "subtle" for captions.
-- **Accent:** a single **ocean blue** (`--color-accent: #2a6f97`, hover `#1e5a7d`, soft `#e8f1f7`). Warm camel (`--color-accent-warm: #c4976c`) is available as a sparing secondary. Used for CTAs, links, eyebrows, small dots. Locked across the whole site. Never a gradient glow.
-- **Type:** Geist (loaded by the scaffold). Large, tight, balanced display headings (`text-display`/`text-h1`/`text-h2` with negative tracking); readable 16px+ body; restrained uppercase eyebrows. No serif.
-- **Radius:** locked scale — `rounded-xl` buttons/inputs, `rounded-2xl` cards, `rounded-pill` chips.
-- **Imagery:** tasteful placeholders for affluent home/life. The hero uses an abstract "Today" brief card, not stock art. No robots, circuits, glowing brains, or generic dashboards.
-- **Luxury rule:** fewer words, more whitespace, precise CTAs.
-
-## Interaction / motion (from emilkowalski/skill + pbakaus/impeccable + Leonxlnx/taste-skill)
+## Interaction / motion
 
 - Animate **transform/opacity only** (GPU). Never `transition: all`; name properties.
-- **Custom easing**, never `ease-in` on UI. Standard out-curve: `cubic-bezier(0.23,1,0.32,1)` (`--ease-out-soft`).
-- **Durations** stay snappy: presses ~100–160ms, UI transitions <300ms. Quiz question entrance is 280ms.
-- Buttons press with `active:scale-[0.97]`. Cards lift subtly on hover only.
-- One focus treatment page-wide: `:focus-visible` 2px accent outline, offset — never bare `outline:none`.
-- Honor `prefers-reduced-motion`: a global rule collapses durations and the reveal/gauge degrade to instant.
-- Hero fits the initial viewport; nav is a single line; CTAs are ≤3 words and never wrap.
+- **Custom easing** `--ease-out` = `cubic-bezier(0.23,1,0.32,1)`; never `ease-in` on UI.
+- Durations: presses ~100–160ms (`active:scale-[0.97]`), UI < 300ms, quiz entrance 340ms, reveal 600ms, dashboard `card-in` + `bar-fill`.
+- Cards lift `-translate-y-0.5` + shadow step on hover. One focus treatment page-wide: `:focus-visible` 2px ocean-blue outline, offset — never bare `outline:none`.
+- Honor `prefers-reduced-motion`: a global rule collapses durations; reveal/bar-fill degrade to their end state.
+- The hero `MagneticButton` and the animated dashboard are tiny client components; everything else is CSS. **framer-motion is intentionally not used** (React 19 / Next 16 / Turbopack robustness).
 
-## Anti-defaults we deliberately avoid (taste-skill)
+## Dark surfaces
 
-AI-purple/blue *glow*, centered-hero-on-dark-mesh, three identical feature cards with no hierarchy, glassmorphism-on-everything, Inter + slate-900, beige/brass/espresso "luxury." Our ocean blue is muted and flat (no glow); tiers and cards carry hierarchy (featured Concierge).
+Multiple deep teal-navy moments are on-brand (MetaOrtho uses several): the hero dashboard mockup, the shared `CtaBand`, and the footer are dark. Use them for hierarchy, not decoration. (This relaxes the old "exactly one inverted surface" rule.)
 
-## Craft system (the level-up pass)
+## Anti-defaults we deliberately avoid
 
-A deeper read of the three repos (plus Josh Comeau's shadow method and the official Anthropic frontend-design skill) drives these now-implemented rules:
-
-- **Mono labels.** Geist Mono, uppercase, `tracking-[0.1em]` for every eyebrow, nav-meta, tier label, keyboard hint, and "sample result." All numerics (`score`, `%`, step/phase indices) use `tabular-nums`. This is the tech-editorial signal that keeps cream+teal off the generic-luxury default. `.eyebrow` carries a short leading hairline tick.
-- **Elevation = layered + hue-tinted.** Shadows are tinted to the teal-navy hue (`hsl(202 45% 14%)`), never black, in 2–3 stacked layers (`--shadow-soft/lift/raise/hero`). Cards rest on `soft`, lift to `lift` on hover. This makes the flat cream read as depth without any gradient.
-- **Hairlines are tinted, not gray** (`hsl(202 24% 87%)` on cream, `hsl(202 28% 24%)` on teal panels). Connected panels use `gap-px`/`divide-y` instead of three floating cards.
-- **Layout variety (taste-skill).** Homepage runs distinct families: stacked hero → split → connected stepper → asymmetric bento (featured Chief of Staff) → split + divided list → accent quiz band → pull-quote → tier grid (featured Concierge enlarged) → one inverted CtaBand. Only **one** inverted (teal-navy) surface site-wide.
-- **Motion.** Transform/opacity only; `--ease-out` (`cubic-bezier(0.23,1,0.32,1)`); press `scale(0.97)` ≤160ms; card hover `-translate-y-0.5` + shadow step; quiz entrance 320ms; reveal 500ms; all collapse under reduced-motion.
-
-### AI-tells we purged (per all three repos)
-
-Removed em-dashes from rendered copy (→ periods/colons/commas), giant decorative `01/02/03` numerals (→ small mono `Step 01` / `Phase 01` only where genuinely sequential), decorative middle-dots, gradient glows, and most "agent" filler ("the agent does X" → "the system" / "a private intelligence"). No glassmorphism, no fake SaaS dashboard (the hero "Today brief" is editorial, not a dashboard).
-
-> External repos were inspected via web (see `.claude/external-skills/SOURCES.md`). Guidance was distilled here rather than copied wholesale.
+AI-purple/blue *glow*, centered-hero-on-dark-mesh as the only idea, three identical feature cards with no hierarchy, glassmorphism-on-everything, Inter + slate-900, fake dashboards, and giant decorative `01/02/03` numerals (we use small mono-style `Step 01` / `Question 01` only where genuinely sequential). No em-dashes in rendered copy (use periods/colons/commas).

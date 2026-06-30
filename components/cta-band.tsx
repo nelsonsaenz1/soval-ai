@@ -1,33 +1,39 @@
 import { Button } from "@/components/ui/button";
-import { ctaBand } from "@/lib/site-copy";
-import { CtaBandActions } from "@/components/cta-band-actions";
+import { ConsultButton } from "@/components/consult-button";
+import { MeshBackground } from "@/components/motion/mesh-background";
 
+/**
+ * Shared bottom call-to-action band (dark, mesh). Appears on every page per the
+ * conversion rules. Defaults to the homepage final-CTA copy.
+ */
 export function CtaBand({
-  eyebrow = "The next step",
-  title = ctaBand.title,
-  body = ctaBand.body,
+  title = "You do not need to become an AI expert.",
+  subtitle = "You need a system that gives you time back. Book the $79 consult and we will find the highest-leverage place to start.",
+  source = "cta_band",
 }: {
-  eyebrow?: string;
   title?: string;
-  body?: string;
+  subtitle?: string;
+  source?: string;
 }) {
   return (
-    <section className="bg-surface-contrast text-on-contrast">
-      <div className="container-edge py-20 md:py-28">
-        <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
-          <span className="font-mono text-[0.72rem] font-medium uppercase tracking-[0.12em] text-accent-warm">
-            {eyebrow}
-          </span>
-          <h2 className="text-h2 font-semibold text-balance">{title}</h2>
-          <p className="max-w-2xl text-lede text-pretty text-on-contrast-muted">
-            {body}
-          </p>
-          <CtaBandActions>
-            <Button href="/quiz" size="lg">
-              {ctaBand.primary.label}
-            </Button>
-          </CtaBandActions>
+    <section className="relative isolate overflow-hidden mesh-dark text-on-dark">
+      <MeshBackground />
+      <div className="container-edge relative flex flex-col items-center gap-6 py-20 text-center md:py-28">
+        <h2 className="max-w-3xl text-balance font-display text-h1 text-on-dark">
+          {title}
+        </h2>
+        <p className="max-w-2xl text-pretty text-lede text-on-dark-secondary">
+          {subtitle}
+        </p>
+        <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
+          <ConsultButton source={source} variant="light" magnetic />
+          <Button href="/quiz" variant="outlineDark" size="lg">
+            Take the quiz
+          </Button>
         </div>
+        <p className="text-sm text-on-dark-muted">
+          Give yourself back 5 hours this month.
+        </p>
       </div>
     </section>
   );

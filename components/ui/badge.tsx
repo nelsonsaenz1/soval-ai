@@ -1,38 +1,66 @@
 import * as React from "react";
 import { cn } from "@/lib/cn";
 
+type Variant = "accent" | "neutral" | "warm" | "onDark" | "outline";
+
+const variants: Record<Variant, string> = {
+  accent: "bg-accent-light text-accent border border-accent/15",
+  neutral: "bg-warm text-secondary border border-hairline",
+  warm: "bg-accent-warm/12 text-accent-warm-hover border border-accent-warm/25",
+  onDark: "bg-white/10 text-on-dark border border-on-dark-hairline",
+  outline: "bg-transparent text-secondary border border-hairline-strong",
+};
+
 export function Badge({
   children,
   className,
-  tone = "neutral",
+  variant = "accent",
+  dot = false,
 }: {
   children: React.ReactNode;
   className?: string;
-  tone?: "neutral" | "accent";
+  variant?: Variant;
+  dot?: boolean;
 }) {
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-2 rounded-pill border px-3.5 py-1.5",
-        "font-mono text-[0.7rem] font-medium uppercase tracking-[0.1em]",
-        tone === "accent"
-          ? "border-accent-border bg-accent-soft text-accent-strong"
-          : "border-border bg-surface text-muted-foreground",
+        "inline-flex items-center gap-1.5 rounded-pill px-3 py-1 text-xs font-medium leading-none",
+        variants[variant],
         className,
       )}
     >
-      <span
-        aria-hidden="true"
-        className="h-1.5 w-1.5 rounded-full bg-accent"
-      />
+      {dot ? (
+        <span
+          className={cn(
+            "size-1.5 rounded-full",
+            variant === "onDark" ? "bg-white/70" : "bg-accent",
+          )}
+          aria-hidden
+        />
+      ) : null}
       {children}
     </span>
   );
 }
 
-export function CheckBadge({ children }: { children: React.ReactNode }) {
+/** Small check-prefixed pill, used for trust/inclusion chips. */
+export function CheckBadge({
+  children,
+  onDark = false,
+}: {
+  children: React.ReactNode;
+  onDark?: boolean;
+}) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-pill border border-border bg-surface px-3 py-1 text-xs font-medium text-muted-foreground">
+    <span
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-pill border px-3 py-1 text-xs font-medium",
+        onDark
+          ? "border-on-dark-hairline bg-white/10 text-on-dark"
+          : "border-hairline bg-surface text-secondary",
+      )}
+    >
       <svg
         viewBox="0 0 16 16"
         className="h-3.5 w-3.5 text-accent"

@@ -1,20 +1,61 @@
-import { Hero } from "@/components/hero";
+import Link from "next/link";
 import { Section, SectionHeader } from "@/components/ui/section";
-import { AgentCard } from "@/components/agent-card";
-import { TierCard } from "@/components/tier-card";
+import { Card } from "@/components/ui/card";
+import { Reveal } from "@/components/ui/reveal";
+import { Hero } from "@/components/home/hero";
+import { PathChooser } from "@/components/home/path-chooser";
+import { FounderNote } from "@/components/home/founder-note";
+import { ServiceCard } from "@/components/service-card";
+import { MidCta } from "@/components/mid-cta";
 import { CtaBand } from "@/components/cta-band";
 import { Button } from "@/components/ui/button";
-import { agents, steps, tiers, trustPoints } from "@/lib/site-copy";
+import { ConsultButton } from "@/components/consult-button";
+import { SERVICES } from "@/lib/services";
 
-const timeBack = [
-  "Calendar & scheduling",
-  "Inbox & correspondence",
-  "Travel & itineraries",
-  "Household & maintenance",
-  "Family logistics",
-  "Health & routines",
-  "Reminders & follow-through",
-  "Research & briefings",
+const PROBLEMS = [
+  {
+    title: "Your personal admin keeps expanding.",
+    body: "Email, scheduling, errands, travel, school, notes, reminders, and research keep piling up.",
+  },
+  {
+    title: "Your business leaks time in repeatable places.",
+    body: "Forms, follow-ups, quotes, support emails, reporting, and handoffs eat hours every week.",
+  },
+  {
+    title: "Generic AI advice does not survive contact with real life.",
+    body: "You need a system built around your accounts, voice, clients, routines, and standards.",
+  },
+];
+
+const STEPS = [
+  {
+    n: "01",
+    title: "Map the bottleneck.",
+    body: "We learn what is slow, repetitive, expensive, or mentally draining.",
+  },
+  {
+    n: "02",
+    title: "Design the simplest useful system.",
+    body: "We choose the right tool stack, not the fanciest one.",
+  },
+  {
+    n: "03",
+    title: "Build with your real examples.",
+    body: "Prompts, assistants, workflows, and automations are tested against your actual work.",
+  },
+  {
+    n: "04",
+    title: "Hand it over or keep improving.",
+    body: "You can own it outright or keep us on monthly.",
+  },
+];
+
+const PRICING_PREVIEW = [
+  { price: "$79", name: "AI Clarity Consult", note: "45 minutes + one-page AI Leverage Map", href: "/book" },
+  { price: "$299+", name: "Personal Assistant Sprint", note: "Build your first real assistant", href: "/services/personal-ai-assistant" },
+  { price: "$249+", name: "Business Workflow Audit", note: "Find the bottlenecks before building", href: "/services/business-workflow-audit" },
+  { price: "$1,500", name: "Automation Build Sprint", note: "Scoped workflow builds", href: "/services/automation-build-sprint" },
+  { price: "$299/mo", name: "AI Operating System", note: "Ongoing optimization", href: "/services/ai-operating-system" },
 ];
 
 export default function HomePage() {
@@ -22,194 +63,145 @@ export default function HomePage() {
     <>
       <Hero />
 
-      {/* 1. The mandate — split */}
-      <Section>
-        <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
-          <div className="flex flex-col gap-5">
-            <span className="eyebrow">The mandate</span>
-            <h2 className="text-h2 font-semibold text-balance">
-              Your life has too many moving pieces for another app.
-            </h2>
-            <p className="text-lede text-pretty text-muted-foreground">
-              Nelson&apos;s Path is not software you manage. It is support
-              infrastructure for your household: a private system that quietly
-              absorbs the work filling your week, and returns your time.
-            </p>
-          </div>
-          <ul className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-border bg-border">
-            {timeBack.map((item) => (
-              <li
-                key={item}
-                className="flex items-center gap-3 bg-surface px-5 py-4 text-sm text-foreground"
-              >
-                <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                {item}
-              </li>
-            ))}
-          </ul>
+      {/* Problem */}
+      <Section tone="surface">
+        <SectionHeader
+          eyebrow="The real AI problem"
+          title="The tools are powerful. The setup is the bottleneck."
+          description="Most people do not need another AI app. They need someone to translate their messy routines into a system that actually works. The value is not the prompt. It is knowing what to automate, what to leave human, and how to make the workflow easy enough to use every week."
+        />
+        <div className="mt-12 grid gap-5 md:grid-cols-3">
+          {PROBLEMS.map((p, i) => (
+            <Reveal key={p.title} delay={i * 80}>
+              <Card variant="cream" className="h-full">
+                <h3 className="font-display text-h3 text-heading">{p.title}</h3>
+                <p className="mt-3 text-pretty text-secondary">{p.body}</p>
+              </Card>
+            </Reveal>
+          ))}
         </div>
       </Section>
 
-      {/* 2. Process — connected stepper */}
-      <Section tone="muted">
+      {/* Path chooser */}
+      <Section tone="default">
         <SectionHeader
-          eyebrow="The engagement"
-          title="A white-glove process. We handle the rest."
+          eyebrow="Choose your path"
+          title="Choose the kind of time you want back."
+          description="Two places AI creates immediate leverage. Pick where you feel the drain, and we will meet you there."
         />
-        <div className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-border bg-border md:grid-cols-3">
-          {steps.map((step) => (
-            <div key={step.number} className="flex flex-col gap-3 bg-surface p-7">
-              <span className="font-mono text-xs font-medium uppercase tracking-[0.1em] tabular-nums text-accent-strong">
-                Step {step.number}
+        <div className="mt-12">
+          <PathChooser />
+        </div>
+      </Section>
+
+      {/* Services preview */}
+      <Section tone="warm">
+        <SectionHeader
+          eyebrow="Services"
+          title="Five focused offers. No bloated agency menu."
+          description="We focus on the two places AI can create immediate leverage, with a clear entry point and an ongoing option. That is the whole menu."
+        />
+        <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {SERVICES.map((service, i) => (
+            <Reveal key={service.slug} delay={(i % 3) * 80}>
+              <ServiceCard service={service} />
+            </Reveal>
+          ))}
+          <Card
+            variant="glassCream"
+            className="flex h-full flex-col justify-center gap-4 border-accent/15 bg-accent-light/50"
+          >
+            <h3 className="font-display text-h3 text-heading">
+              See the full breakdown.
+            </h3>
+            <p className="text-pretty text-secondary">
+              Pricing, deliverables, and exactly who each offer is for.
+            </p>
+            <div>
+              <Button href="/services" variant="secondary" size="md">
+                Compare all services
+              </Button>
+            </div>
+          </Card>
+        </div>
+      </Section>
+
+      {/* Mid-page CTA */}
+      <Section tone="default">
+        <MidCta source="home_mid" />
+      </Section>
+
+      {/* How it works */}
+      <Section tone="surface">
+        <SectionHeader
+          eyebrow="How it works"
+          title="Simple process. Real deliverables."
+          description="No theater, no dashboards nobody uses. We build only what will be used, then test it against your real work."
+        />
+        <div className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-4">
+          {STEPS.map((step) => (
+            <div key={step.n} className="bg-surface p-7">
+              <span className="nums text-xs font-semibold uppercase tracking-[0.16em] text-accent">
+                Step {step.n}
               </span>
-              <h3 className="text-h3 font-semibold">{step.title}</h3>
-              <p className="text-sm leading-relaxed text-muted-foreground">
+              <h3 className="mt-4 font-display text-h3 text-heading">
+                {step.title}
+              </h3>
+              <p className="mt-2 text-pretty text-sm text-secondary">
                 {step.body}
               </p>
             </div>
           ))}
         </div>
-        <div className="mt-10">
-          <Button href="/how-it-works" variant="secondary">
-            See the full process
-          </Button>
-        </div>
       </Section>
 
-      {/* 3. Capabilities — asymmetric bento */}
-      <Section>
-        <SectionHeader
-          eyebrow="Capabilities"
-          title="A staff of specialists, working quietly in the background."
-          description="Begin with a single focus and grow from there. Each specialist is taught your preferences and works through the tools you already use."
-        />
-        <div className="mt-12 grid gap-5 md:grid-cols-3">
-          <AgentCard agent={agents[0]} featured className="md:col-span-2" />
-          {agents.slice(1, 3).map((agent) => (
-            <AgentCard key={agent.name} agent={agent} />
-          ))}
-          {agents.slice(3).map((agent) => (
-            <AgentCard key={agent.name} agent={agent} />
-          ))}
-        </div>
-        <div className="mt-10">
-          <Button href="/agent-capabilities" variant="secondary">
-            Explore the full suite
-          </Button>
-        </div>
-      </Section>
-
-      {/* 4. Privacy — split with divided list */}
+      {/* Pricing preview */}
       <Section tone="sand">
-        <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
-          <div className="flex flex-col gap-5">
-            <span className="eyebrow">Privacy</span>
-            <h2 className="text-h2 font-semibold text-balance">
-              Your data never leaves your home.
-            </h2>
-            <p className="text-lede text-pretty text-muted-foreground">
-              Your system and its memory run on dedicated hardware you own.
-              Cloud services are used only where you authorize them, and never
-              by default.
-            </p>
-            <div className="mt-1">
-              <Button href="/privacy-security" variant="secondary">
-                How we keep it private
-              </Button>
-            </div>
-          </div>
-          <ul className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-surface">
-            {trustPoints.map((point) => (
-              <li key={point.title} className="flex flex-col gap-1.5 p-6 sm:p-7">
-                <h3 className="text-base font-semibold">{point.title}</h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {point.body}
-                </p>
+        <SectionHeader
+          eyebrow="Pricing"
+          title="Start cheaper than a traditional AI assessment."
+          description="Clear, productized pricing. You pay tools directly, with no software markup. Final scope is confirmed before any build."
+        />
+        <div className="mt-12 overflow-hidden rounded-2xl border border-hairline bg-surface shadow-soft">
+          <ul className="divide-y divide-hairline">
+            {PRICING_PREVIEW.map((row) => (
+              <li key={row.name}>
+                <Link
+                  href={row.href}
+                  className="flex flex-col gap-1 px-6 py-5 transition-colors duration-150 hover:bg-warm sm:flex-row sm:items-center sm:gap-6"
+                >
+                  <span className="nums w-24 shrink-0 font-display text-h3 text-accent">
+                    {row.price}
+                  </span>
+                  <span className="flex-1">
+                    <span className="block font-medium text-heading">
+                      {row.name}
+                    </span>
+                    <span className="block text-sm text-secondary">
+                      {row.note}
+                    </span>
+                  </span>
+                  <span className="hidden text-accent sm:block" aria-hidden="true">
+                    →
+                  </span>
+                </Link>
               </li>
             ))}
           </ul>
         </div>
-      </Section>
-
-      {/* 5. Quiz teaser */}
-      <Section>
-        <div className="overflow-hidden rounded-2xl border border-accent-border bg-accent-soft">
-          <div className="grid items-center gap-10 p-8 sm:p-12 lg:grid-cols-[1.4fr_1fr]">
-            <div className="flex flex-col gap-5">
-              <span className="eyebrow">Agent Fit Quiz</span>
-              <h2 className="text-h2 font-semibold text-balance">
-                See how much of your week a private AI could return.
-              </h2>
-              <p className="max-w-xl text-lede text-pretty text-muted-foreground">
-                A two-minute assessment that ends with your Agent Fit Score and
-                a tailored build recommendation.
-              </p>
-              <div className="mt-1">
-                <Button href="/quiz" size="lg">
-                  Take the Agent Fit Quiz
-                </Button>
-              </div>
-            </div>
-            <div className="hidden lg:block">
-              <div className="ml-auto w-full max-w-xs rounded-2xl border border-border bg-surface p-7 shadow-lift">
-                <span className="font-mono text-[0.7rem] uppercase tracking-[0.1em] text-subtle-foreground">
-                  Sample result
-                </span>
-                <p className="mt-3 flex items-baseline gap-1.5">
-                  <span className="text-5xl font-semibold tabular-nums tracking-tight">
-                    87
-                  </span>
-                  <span className="font-mono text-sm text-subtle-foreground">
-                    / 100
-                  </span>
-                </p>
-                <p className="mt-1 text-sm font-medium text-accent-strong">
-                  Excellent Fit
-                </p>
-                <p className="mt-4 border-t border-border pt-4 font-mono text-[0.7rem] uppercase tracking-[0.08em] text-subtle-foreground">
-                  Recommended · Concierge
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      {/* 6. Pull quote — human-backed */}
-      <Section tone="muted">
-        <figure className="container-prose flex flex-col items-center gap-7 text-center">
-          <span className="eyebrow eyebrow--plain">Human-backed</span>
-          <blockquote className="text-h2 font-medium text-balance">
-            &ldquo;This is not a chatbot helpdesk. Real people install your
-            system, train your household, and stay on call as your life
-            changes.&rdquo;
-          </blockquote>
-          <figcaption className="font-mono text-xs uppercase tracking-[0.08em] text-subtle-foreground">
-            The Nelson&apos;s Path concierge promise
-          </figcaption>
-        </figure>
-      </Section>
-
-      {/* 7. Engagements */}
-      <Section>
-        <SectionHeader
-          eyebrow="Engagements"
-          title="Three ways to begin."
-          description="Each is confirmed on your discovery call. The right build depends on your household, hardware, and integrations."
-        />
-        <div className="mt-12 grid items-stretch gap-6 lg:grid-cols-3">
-          {tiers.map((tier) => (
-            <TierCard key={tier.id} tier={tier} />
-          ))}
-        </div>
-        <div className="mt-10 flex justify-center">
-          <Button href="/pricing" variant="secondary">
-            Compare what&apos;s included
+        <div className="mt-8 flex flex-wrap items-center gap-3">
+          <ConsultButton source="home_pricing" size="md" />
+          <Button href="/pricing" variant="secondary" size="md">
+            See full pricing
           </Button>
         </div>
       </Section>
 
-      {/* 8. CTA — the single inverted surface */}
+      {/* Founder note */}
+      <Section tone="default">
+        <FounderNote />
+      </Section>
+
       <CtaBand />
     </>
   );

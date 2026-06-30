@@ -1,87 +1,92 @@
 @import "tailwindcss";
 
 /* ----------------------------------------------------------------------------
-   Nelson's Path — warm cream + deep teal-navy, ocean-blue accent.
-   Palette matched to metaortho.com. Light-only, editorial. No AI-glow, no neon.
+   [NAME TBD] — AI concierge / operations studio.
+   Visual system replicates MetaOrtho: warm cream pages, deep teal-navy dark
+   sections, DM Serif Display editorial headings + DM Sans body, large pill
+   CTAs, glass cards, soft mesh gradients, premium calm spacing.
 
-   Craft system distilled from emilkowalski/skill, pbakaus/impeccable,
-   Leonxlnx/taste-skill, and Josh Comeau's layered-shadow method:
-   GPU-only motion, custom easing, hue-tinted shadows + hairlines, mono labels.
+   Motion is GPU-only (transform/opacity), custom-eased, and collapses under
+   prefers-reduced-motion. Layered, hue-tinted shadows; tinted hairlines.
 ---------------------------------------------------------------------------- */
 
 @theme {
-  /* Surfaces — warm cream + sand */
+  /* Surfaces — warm cream + sand, deep teal-navy darks (MetaOrtho tokens) */
   --color-background: #fbf8f5;
   --color-surface: #ffffff;
-  --color-surface-muted: #f4efe7;
-  --color-surface-sand: #ece5d9;
-  --color-surface-contrast: #0a2633;
-  --color-surface-darkest: #061b24;
+  --color-cream: #fbf8f5;
+  --color-warm: #f5f0e8;
+  --color-sand: #ede7db;
+  --color-dark: #0a2633;
+  --color-darkest: #061b24;
 
-  /* Ink — deep teal-navy text and cool slates */
-  --color-foreground: #0a2633;
-  --color-muted-foreground: #4f626b;
-  --color-subtle-foreground: #7c8b92;
+  /* Ink — near-black primary, teal-navy headings (MetaOrtho tokens) */
+  --color-foreground: rgba(0, 0, 0, 0.94);
+  --color-heading: #0a2633;
+  --color-secondary: rgba(0, 0, 0, 0.8);
+  --color-muted: rgba(0, 0, 0, 0.55);
+  --color-hairline: rgba(0, 0, 0, 0.08);
+  --color-hairline-strong: rgba(0, 0, 0, 0.14);
 
-  /* On-dark text (for the single inverted surface) */
-  --color-on-contrast: #eef2f2;
-  --color-on-contrast-muted: #9fb3ba;
+  /* On-dark text + hairlines (for teal-navy sections, Linear-style whisper) */
+  --color-on-dark: rgba(255, 255, 255, 0.94);
+  --color-on-dark-secondary: rgba(255, 255, 255, 0.72);
+  --color-on-dark-muted: rgba(255, 255, 255, 0.52);
+  --color-on-dark-hairline: rgba(255, 255, 255, 0.12);
 
-  /* Hairlines — tinted to brand hue (~205°), never flat gray */
-  --color-border: hsl(202 24% 87%);
-  --color-border-strong: hsl(202 22% 79%);
-  --color-contrast-border: hsl(202 28% 24%);
-
-  /* Accent — ocean blue, with warm camel as a sparing secondary */
+  /* Accent — ocean blue primary, warm camel + teal as sparing secondaries */
   --color-accent: #2a6f97;
-  --color-accent-strong: #1e5a7d;
-  --color-accent-soft: #e8f1f7;
-  --color-accent-border: #cfe0ec;
+  --color-accent-hover: #1e5a7d;
+  --color-accent-light: #e8f1f7;
   --color-accent-foreground: #ffffff;
   --color-accent-warm: #c4976c;
-  --color-accent-warm-strong: #b08558;
+  --color-accent-warm-hover: #b08558;
+  --color-accent-teal: #2e7d7d;
 
-  /* Type */
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system,
+  /* Type — DM Serif Display headings, DM Sans body (loaded via next/font) */
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Roboto, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
+  --font-serif: var(--font-dm-serif), Georgia, Cambria, "Times New Roman", serif;
+  --font-mono: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, monospace;
 
-  /* Fluid display scale — ratio ~1.25, tight tracking, balanced */
-  --text-display: clamp(2.5rem, 1.1rem + 4.4vw, 4.5rem);
-  --text-display--line-height: 1.03;
-  --text-display--letter-spacing: -0.04em;
-  --text-h1: clamp(2rem, 1.3rem + 2.4vw, 3.15rem);
-  --text-h1--line-height: 1.06;
-  --text-h1--letter-spacing: -0.03em;
-  --text-h2: clamp(1.6rem, 1.2rem + 1.5vw, 2.25rem);
-  --text-h2--line-height: 1.12;
-  --text-h2--letter-spacing: -0.025em;
-  --text-h3: 1.3rem;
-  --text-h3--line-height: 1.25;
-  --text-h3--letter-spacing: -0.015em;
+  /* Fluid display scale — editorial, tight tracking, balanced */
+  --text-display: clamp(2.6rem, 1.1rem + 4.6vw, 4.6rem);
+  --text-display--line-height: 1.04;
+  --text-display--letter-spacing: -0.025em;
+  --text-h1: clamp(2.1rem, 1.35rem + 2.5vw, 3.25rem);
+  --text-h1--line-height: 1.08;
+  --text-h1--letter-spacing: -0.02em;
+  --text-h2: clamp(1.65rem, 1.2rem + 1.6vw, 2.4rem);
+  --text-h2--line-height: 1.14;
+  --text-h2--letter-spacing: -0.015em;
+  --text-h3: 1.35rem;
+  --text-h3--line-height: 1.3;
+  --text-h3--letter-spacing: -0.01em;
   --text-lede: 1.1875rem;
   --text-lede--line-height: 1.6;
 
-  /* Locked radius scale */
-  --radius-pill: 999px;
+  /* Radius scale — locked to MetaOrtho (12 / 16 / 24 / 32 / pill) */
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-2xl: 32px;
+  --radius-pill: 9999px;
 
-  /* Easing (emilkowalski/skill) — never built-in ease-in on UI */
+  /* Easing — never built-in ease-in on UI */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-out-soft: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 
-  /* Elevation — layered + tinted to teal-navy hue (~205°), one light source */
+  /* Elevation — layered + tinted to teal-navy hue, single light source */
   --shadow-soft: 0px 1px 1px hsl(202 45% 14% / 0.05),
-    0px 2px 3px hsl(202 45% 14% / 0.05);
+    0px 2px 4px hsl(202 45% 14% / 0.05);
   --shadow-lift: 0px 1px 2px hsl(202 45% 14% / 0.05),
-    0px 4px 8px hsl(202 45% 14% / 0.06),
-    0px 8px 16px hsl(202 45% 14% / 0.05);
+    0px 6px 12px hsl(202 45% 14% / 0.06), 0px 12px 22px hsl(202 45% 14% / 0.05);
   --shadow-raise: 0px 2px 4px hsl(202 45% 14% / 0.04),
-    0px 10px 20px hsl(202 45% 14% / 0.07),
-    0px 20px 40px hsl(202 45% 14% / 0.08);
-  --shadow-hero: 0px 10px 30px hsl(202 45% 14% / 0.08),
-    0px 30px 70px hsl(202 50% 12% / 0.16);
+    0px 12px 24px hsl(202 45% 14% / 0.08), 0px 24px 48px hsl(202 45% 14% / 0.08);
+  --shadow-hero: 0px 12px 34px hsl(202 45% 14% / 0.1),
+    0px 34px 80px hsl(202 50% 10% / 0.22);
 }
 
 :root {
@@ -89,7 +94,7 @@
 }
 
 * {
-  border-color: var(--color-border);
+  border-color: var(--color-hairline);
 }
 
 html {
@@ -112,14 +117,14 @@ body {
   color: var(--color-accent-foreground);
 }
 
-/* One focus treatment, page-wide (impeccable: never bare outline:none) */
+/* One focus treatment, page-wide — never bare outline:none */
 :focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
   border-radius: 6px;
 }
 
-/* Respect reduced motion: keep opacity/color, drop transforms */
+/* Respect reduced motion: keep opacity/color, drop transforms + animation */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -138,7 +143,7 @@ body {
   .container-edge {
     width: 100%;
     margin-inline: auto;
-    max-width: 76rem; /* ~1216px */
+    max-width: 78rem;
     padding-inline: 1.25rem;
   }
   @media (min-width: 640px) {
@@ -146,43 +151,119 @@ body {
       padding-inline: 2rem;
     }
   }
-
   .container-prose {
     width: 100%;
     margin-inline: auto;
-    max-width: 42rem; /* ~67ch measure */
+    max-width: 44rem;
   }
 
-  /* Mono uppercase eyebrow label — the tech-editorial signal */
+  /* Editorial serif heading helper */
+  .font-display {
+    font-family: var(--font-serif);
+    font-weight: 400;
+  }
+
+  /* Uppercase tracked eyebrow with a short leading tick (Stripe/Linear cue) */
   .eyebrow {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    font-weight: 500;
+    gap: 0.6rem;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
     line-height: 1;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: var(--color-accent-strong);
+    color: var(--color-accent);
     font-feature-settings: "tnum" 1;
   }
   .eyebrow::before {
     content: "";
-    width: 1.25rem;
+    width: 1.5rem;
     height: 1px;
     background-color: currentColor;
-    opacity: 0.55;
+    opacity: 0.5;
   }
   .eyebrow--plain::before {
     display: none;
   }
+  .eyebrow--on-dark {
+    color: #8fc2dd;
+  }
 
-  /* Quiz question entrance (opacity + tiny translate only) */
+  /* Tabular numerics for prices, scores, stat figures */
+  .nums {
+    font-feature-settings: "tnum" 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Glass cards — cream on light, translucent panel on dark */
+  .glass-cream {
+    background-color: rgba(255, 255, 255, 0.86);
+    border: 1px solid var(--color-hairline);
+    box-shadow: var(--shadow-soft);
+    -webkit-backdrop-filter: blur(8px) saturate(1.05);
+    backdrop-filter: blur(8px) saturate(1.05);
+  }
+  .glass-dark {
+    background-color: rgba(255, 255, 255, 0.055);
+    border: 1px solid var(--color-on-dark-hairline);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05),
+      var(--shadow-raise);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    backdrop-filter: blur(14px) saturate(1.2);
+  }
+
+  /* Soft mesh gradient over teal-navy — hero + dashboard preview surfaces */
+  .mesh-dark {
+    background-color: var(--color-dark);
+    background-image: radial-gradient(
+        58% 58% at 12% 8%,
+        rgba(42, 111, 151, 0.38),
+        transparent 60%
+      ),
+      radial-gradient(
+        52% 52% at 92% 16%,
+        rgba(46, 125, 125, 0.26),
+        transparent 58%
+      ),
+      radial-gradient(
+        60% 62% at 78% 104%,
+        rgba(196, 151, 108, 0.14),
+        transparent 60%
+      );
+  }
+  .mesh-cream {
+    background-color: var(--color-cream);
+    background-image: radial-gradient(
+        50% 55% at 8% 0%,
+        rgba(42, 111, 151, 0.07),
+        transparent 60%
+      ),
+      radial-gradient(
+        45% 50% at 100% 8%,
+        rgba(196, 151, 108, 0.1),
+        transparent 55%
+      );
+  }
+
+  /* Reveal-on-scroll (opacity + small translate only) */
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+    will-change: opacity, transform;
+  }
+  .reveal[data-shown="true"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Quiz question entrance */
   @keyframes quiz-in {
     from {
       opacity: 0;
-      transform: translateX(16px);
+      transform: translateX(18px);
     }
     to {
       opacity: 1;
@@ -190,24 +271,43 @@ body {
     }
   }
   .quiz-in {
-    animation: quiz-in 0.32s var(--ease-out) both;
+    animation: quiz-in 0.34s var(--ease-out) both;
   }
 
-  /* Reveal-on-scroll (opacity + small translate only) */
-  .reveal {
-    opacity: 0;
-    transform: translateY(14px);
-    transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
-    will-change: opacity, transform;
+  /* Dashboard mockup: staggered card entrance + progress-bar fill */
+  @keyframes card-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
-  .reveal[data-shown="true"] {
-    opacity: 1;
-    transform: none;
+  .card-in {
+    animation: card-in 0.5s var(--ease-out) both;
   }
+  @keyframes bar-fill {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(var(--fill, 1));
+    }
+  }
+  .bar-fill {
+    transform-origin: left center;
+    animation: bar-fill 1.1s var(--ease-out) 0.3s both;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .reveal {
       opacity: 1;
       transform: none;
+    }
+    .bar-fill {
+      transform: scaleX(var(--fill, 1));
     }
   }
 }

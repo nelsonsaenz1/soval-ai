@@ -1,32 +1,40 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { DM_Sans, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
+import { BRAND } from "@/lib/brand";
+import { Navbar } from "@/components/layout/navbar";
+import { Footer } from "@/components/layout/footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const dmSerif = DM_Serif_Display({
+  variable: "--font-dm-serif",
+  weight: "400",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://nelsonspath.com"),
+  metadataBase: new URL(BRAND.url),
   title: {
-    default: "Nelson's Path — Your own AI that runs your life",
-    template: "%s · Nelson's Path",
+    default: `${BRAND.name} — Give yourself back the hours AI was supposed to save`,
+    template: `%s · ${BRAND.name}`,
   },
-  description:
-    "A done-for-you personal AI agent, installed in your home and connected to your real tools. Local-first, private, and backed by a human concierge who keeps it working.",
+  description: BRAND.metaDescription,
   openGraph: {
-    title: "Nelson's Path — Your own AI that runs your life",
-    description:
-      "A done-for-you personal AI agent, installed in your home. Local-first, private, human-backed.",
+    title: `${BRAND.name} — Personal AI assistants + small-business automation`,
+    description: BRAND.metaDescription,
     type: "website",
+    url: BRAND.url,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${BRAND.name} — Personal AI assistants + small-business automation`,
+    description: BRAND.metaDescription,
   },
 };
 
@@ -38,20 +46,20 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${dmSans.variable} ${dmSerif.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-accent-foreground"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-pill focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-accent-foreground"
         >
           Skip to content
         </a>
-        <SiteHeader />
+        <Navbar />
         <main id="main" className="flex-1">
           {children}
         </main>
-        <SiteFooter />
+        <Footer />
       </body>
     </html>
   );

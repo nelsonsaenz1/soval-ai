@@ -1,27 +1,48 @@
 import type { Metadata } from "next";
+import { BRAND } from "@/lib/brand";
 import { PageHero } from "@/components/page-hero";
 import { Section, SectionHeader } from "@/components/ui/section";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ConsultButton } from "@/components/consult-button";
+import { MidCta } from "@/components/mid-cta";
 import { CtaBand } from "@/components/cta-band";
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Nelson's Path builds and installs private AI for households that value their time and their privacy, and stays on call to keep the system working.",
+    "Built for people who want practical AI, not AI theater. We help people and small businesses turn AI into actual time back, building only what gets used.",
 };
 
-const promises = [
+const VALUES = [
   {
-    title: "We do it for you.",
-    body: "No setup homework, no half-finished automations. We build, install, and configure the whole system.",
+    title: "Honest scoping",
+    body: "We recommend the smallest thing that will actually help, even when it is less than you expected to spend.",
   },
   {
-    title: "We teach you.",
-    body: "Hands-on training in plain language, so your household is comfortable from day one.",
+    title: "No tool markups",
+    body: "You pay vendors directly. Our incentive is your leverage, not a referral fee.",
   },
   {
-    title: "We stay on call.",
-    body: "Real people keep your system working and grow it as your life changes.",
+    title: "Ownership by default",
+    body: "You keep the prompts, documentation, configuration, and accounts. There is no lock-in.",
   },
+  {
+    title: "Simpler beats shinier",
+    body: "The fanciest stack rarely wins. The one you will use every week does.",
+  },
+  {
+    title: "Human judgment stays in the loop",
+    body: "We automate the busywork and leave the decisions that need a person to a person.",
+  },
+];
+
+const ANTI = [
+  "We do not sell AI magic.",
+  "We do not force you into one platform.",
+  "We do not mark up software tools.",
+  "We do not automate broken processes before simplifying them.",
+  "We do not build dashboards nobody will use.",
 ];
 
 export default function AboutPage() {
@@ -29,56 +50,71 @@ export default function AboutPage() {
     <>
       <PageHero
         eyebrow="About"
-        title="Personal AI, installed like household infrastructure."
-        description="Nelson's Path exists for people whose lives have outgrown another app: households that want the benefits of a private AI without becoming the ones who maintain it."
+        title="Built for people who want practical AI, not AI theater."
+        description="Most AI advice is either too abstract or too bloated. The goal here is simple: help people and small businesses turn AI into actual time back."
+        actions={
+          <>
+            <ConsultButton source="about_hero" size="lg" />
+            <Button href="/services" variant="secondary" size="lg">
+              See services
+            </Button>
+          </>
+        }
       />
 
-      <Section>
-        <div className="container-prose flex flex-col gap-6">
-          <span className="eyebrow">Our story</span>
-          {/* TODO: Replace with Nelson's real founder story, background, and credibility proof. */}
-          <p className="text-lg leading-relaxed text-muted-foreground">
-            Nelson&apos;s Path started from a simple observation: the most
-            capable AI tools were being built for engineers, not for the busy
-            households that needed them most. The people with the least time to
-            configure software were the ones being asked to do the most setup.
-          </p>
-          <p className="text-lg leading-relaxed text-muted-foreground">
-            So we flipped the model. Instead of selling another subscription,
-            we build a private AI system around your life, install it on hardware
-            in your home, connect it to your real tools, teach you how to use
-            it, and stay on call to keep it working. You get the outcome, your
-            time back, without the technical burden.
-          </p>
-          <p className="text-lg leading-relaxed text-muted-foreground">
-            This is not another app to manage. It is support infrastructure for
-            your life, backed by real people who answer when you need them.
-          </p>
+      <Section tone="surface">
+        <div className="grid gap-12 lg:grid-cols-[0.8fr_2fr] lg:gap-16">
+          <h2 className="font-display text-h2 text-heading">Why this exists</h2>
+          <div className="flex max-w-2xl flex-col gap-5 text-pretty text-lede text-secondary">
+            <p>
+              The work starts with real routines, real bottlenecks, and real
+              examples, then builds only what will be used. No generic AI
+              education, no nine-service agency menu, no dashboards nobody opens.
+            </p>
+            <p>
+              {BRAND.name} is personal. The founder discovered a passion for
+              helping people improve their lives and businesses with agentic AI,
+              and wants to share it with the world one client at a time, building
+              real relationships and meaningful connections along the way.
+            </p>
+            <p className="text-base text-muted">
+              The founder&apos;s story will be shared as the company grows.
+              Example outcomes on this site are illustrative, not guarantees.
+            </p>
+          </div>
         </div>
       </Section>
 
-      <Section tone="muted">
+      <Section tone="warm">
         <SectionHeader
-          eyebrow="The concierge promise"
-          title="Done for you, taught to you, supported for you."
-          align="center"
+          eyebrow="Values"
+          title="What we optimize for."
         />
-        <div className="mt-12 grid gap-5 sm:grid-cols-3">
-          {promises.map((promise) => (
-            <div
-              key={promise.title}
-              className="rounded-2xl border border-border bg-surface p-7"
-            >
-              <h3 className="text-lg font-semibold">{promise.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                {promise.body}
-              </p>
-            </div>
+        <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {VALUES.map((v) => (
+            <Card key={v.title} variant="surface">
+              <h3 className="font-display text-h3 text-heading">{v.title}</h3>
+              <p className="mt-2 text-pretty text-secondary">{v.body}</p>
+            </Card>
           ))}
+          <Card variant="glassDark" className="mesh-dark flex flex-col justify-center">
+            <h3 className="font-display text-h3 text-on-dark">What we do not do</h3>
+            <ul className="mt-3 flex flex-col gap-2">
+              {ANTI.map((item) => (
+                <li key={item} className="text-sm text-on-dark-secondary">
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </Card>
         </div>
       </Section>
 
-      <CtaBand />
+      <Section tone="default">
+        <MidCta source="about_mid" />
+      </Section>
+
+      <CtaBand source="about" />
     </>
   );
 }
