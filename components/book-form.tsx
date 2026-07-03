@@ -121,7 +121,7 @@ export function BookForm() {
           Leverage Map within 24 hours of the call.
         </p>
         <p className="mt-4 text-xs text-muted">
-          (Placeholder: connect a scheduler and CRM to confirm instantly.)
+          Prefer not to wait? Use the calendar to book and pay instantly.
         </p>
       </div>
     );

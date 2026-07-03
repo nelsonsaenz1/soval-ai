@@ -1,0 +1,14 @@
+import type { MetadataRoute } from "next";
+import { BRAND } from "@/lib/brand";
+
+export default function robots(): MetadataRoute.Robots {
+  const base = BRAND.url.replace(/\/$/, "");
+  return {
+    rules: {
+      userAgent: "*",
+      allow: "/",
+      disallow: ["/api/"],
+    },
+    sitemap: `${base}/sitemap.xml`,
+  };
+}

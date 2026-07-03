@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { BookForm } from "@/components/book-form";
-import { BRAND } from "@/lib/brand";
+import { SchedulerEmbed } from "@/components/scheduler-embed";
 
 export const metadata: Metadata = {
   title: "Book the $79 AI Clarity Consult",
@@ -16,6 +16,7 @@ const INCLUDES = [
 ];
 
 export default function BookPage() {
+  const schedulerUrl = process.env.NEXT_PUBLIC_SCHEDULER_URL;
   return (
     <>
       <section className="mesh-cream border-b border-hairline">
@@ -56,32 +57,15 @@ export default function BookPage() {
             </div>
 
             <div>
-              <h2 className="font-display text-h3 text-heading">Pick a time</h2>
-              {BRAND.schedulerEmbedUrl ? (
-                <iframe
-                  src={BRAND.schedulerEmbedUrl}
-                  title="Booking calendar"
-                  className="mt-4 h-[34rem] w-full rounded-2xl border border-hairline"
-                />
-              ) : (
-                <div className="mt-4 flex min-h-[12rem] flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-hairline-strong bg-warm/60 p-8 text-center">
-                  <p className="font-medium text-heading">
-                    Booking calendar embeds here
-                  </p>
-                  <p className="max-w-sm text-sm text-secondary">
-                    Cal.com, Calendly, or SavvyCal. Set{" "}
-                    <code className="rounded bg-surface px-1.5 py-0.5 text-[0.8em]">
-                      BRAND.schedulerEmbedUrl
-                    </code>{" "}
-                    to go live. Until then, submit the form and we will email you
-                    times.
-                  </p>
-                </div>
-              )}
+              <h2 className="font-display text-h3 text-heading">
+                Pick a time and pay
+              </h2>
+              <div className="mt-4">
+                <SchedulerEmbed url={schedulerUrl} />
+              </div>
               <p className="mt-3 text-xs text-muted">
-                Payment ($79) is collected once a scheduler is connected. For now,
-                send the request and we will follow up to confirm and collect
-                payment.
+                The $79 is collected securely when you book, and credited toward
+                any package within 14 days.
               </p>
             </div>
           </div>
@@ -89,10 +73,11 @@ export default function BookPage() {
           {/* Right: intake form */}
           <div className="rounded-2xl border border-hairline bg-surface p-7 shadow-lift sm:p-9">
             <h2 className="font-display text-h3 text-heading">
-              Tell us where to start
+              Prefer we reach out first?
             </h2>
             <p className="mt-2 text-sm text-secondary">
-              A few details so the consult is useful from minute one.
+              Not ready to book? Share a few details and we will email you to set
+              up your consult.
             </p>
             <div className="mt-6">
               <BookForm />
