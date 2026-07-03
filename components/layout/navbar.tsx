@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BRAND } from "@/lib/brand";
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/logo";
 import { cn } from "@/lib/cn";
 import { trackEvent } from "@/lib/analytics";
 
@@ -45,10 +46,10 @@ export function Navbar() {
       >
         <Link
           href="/"
-          className="font-display text-xl tracking-tight text-heading"
           aria-label={`${BRAND.name} home`}
+          className="rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
-          {BRAND.name}
+          <Logo />
         </Link>
 
         <div className="hidden items-center gap-1 lg:flex">
