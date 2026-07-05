@@ -49,7 +49,7 @@ export function Navbar() {
           aria-label={`${BRAND.name} home`}
           className="rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
-          <Logo />
+          <Logo priority />
         </Link>
 
         <div className="hidden items-center gap-1 lg:flex">

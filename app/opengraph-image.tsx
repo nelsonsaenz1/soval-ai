@@ -1,11 +1,17 @@
 import { ImageResponse } from "next/og";
+import { readFileSync } from "fs";
+import { join } from "path";
 import { BRAND } from "@/lib/brand";
 
+export const runtime = "nodejs";
 export const alt = `${BRAND.name} — Give yourself back the hours AI was supposed to save`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default function OpengraphImage() {
+  const logo = readFileSync(join(process.cwd(), "public", "logo-light.png"));
+  const logoSrc = `data:image/png;base64,${logo.toString("base64")}`;
+
   return new ImageResponse(
     (
       <div
@@ -21,44 +27,10 @@ export default function OpengraphImage() {
           fontFamily: "Georgia, 'Times New Roman', serif",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-          <div
-            style={{
-              width: "64px",
-              height: "64px",
-              borderRadius: "16px",
-              background: "#2a6f97",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#fbf8f5",
-              fontSize: "42px",
-            }}
-          >
-            S
-          </div>
-          <div
-            style={{
-              color: "#8fc2dd",
-              fontSize: "24px",
-              letterSpacing: "4px",
-              fontFamily: "Helvetica, Arial, sans-serif",
-              textTransform: "uppercase",
-            }}
-          >
-            {BRAND.name}
-          </div>
-        </div>
+        <img src={logoSrc} width={380} height={70} alt={BRAND.name} />
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "28px" }}>
-          <div
-            style={{
-              color: "#f4efe7",
-              fontSize: "68px",
-              lineHeight: 1.1,
-              maxWidth: "1000px",
-            }}
-          >
+        <div style={{ display: "flex", flexDirection: "column", gap: "26px" }}>
+          <div style={{ color: "#f4efe7", fontSize: "66px", lineHeight: 1.1, maxWidth: "1000px" }}>
             Give yourself back the hours AI was supposed to save.
           </div>
           <div

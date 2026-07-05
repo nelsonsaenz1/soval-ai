@@ -151,7 +151,7 @@ function shell(preheader: string, bodyHtml: string) {
   <tr><td align="center">
     <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:14px;overflow:hidden;">
       <tr><td style="padding:28px 34px 0 34px;">
-        <img src="${SITE}/soval-logo-email.png" alt="Soval AI" width="150" style="display:block;border:0;height:auto;width:150px;" />
+        <img src="${SITE}/logo-dark.png" alt="Soval AI" width="168" style="display:block;border:0;height:auto;width:168px;" />
       </td></tr>
       <tr><td style="padding:18px 34px 0 34px;"><div style="height:3px;width:44px;background:#2a6f97;border-radius:2px;font-size:0;line-height:0;">&nbsp;</div></td></tr>
       <tr><td style="padding:20px 34px 30px 34px;">${bodyHtml}</td></tr>

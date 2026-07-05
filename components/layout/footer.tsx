@@ -10,7 +10,7 @@ export function Footer() {
         <div className="grid gap-12 lg:grid-cols-[1.4fr_2fr]">
           <div className="flex flex-col gap-5">
             <Link href="/" aria-label={`${BRAND.name} home`}>
-              <Logo onDark markClassName="size-9" wordmarkClassName="text-2xl" />
+              <Logo onDark className="h-9 w-auto" />
             </Link>
             <p className="max-w-sm text-pretty text-on-dark-secondary">
               {BRAND.oneLiner}
