@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
-import { DM_Sans, DM_Serif_Display } from "next/font/google";
+import {
+  DM_Sans,
+  DM_Serif_Display,
+  Space_Grotesk,
+  JetBrains_Mono,
+} from "next/font/google";
 import "./globals.css";
 import { BRAND } from "@/lib/brand";
 import { Navbar } from "@/components/layout/navbar";
@@ -14,6 +19,24 @@ const dmSans = DM_Sans({
 const dmSerif = DM_Serif_Display({
   variable: "--font-dm-serif",
   weight: "400",
+  style: ["normal", "italic"], // italic used for the emphasized "AI" in the hero
+  subsets: ["latin"],
+  display: "swap",
+});
+
+// Space Grotesk — wordmark + tooling logos. JetBrains Mono — every micro-label
+// (eyebrows, kickers, stat captions, footer headers). Both drive the
+// "engineered / serious" feel of the dark-first design.
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
+  weight: ["400", "500", "600"],
   subsets: ["latin"],
   display: "swap",
 });
@@ -46,7 +69,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${dmSans.variable} ${dmSerif.variable} h-full antialiased`}
+      className={`${dmSans.variable} ${dmSerif.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <a

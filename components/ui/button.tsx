@@ -2,7 +2,14 @@ import Link from "next/link";
 import * as React from "react";
 import { cn } from "@/lib/cn";
 
-type Variant = "primary" | "secondary" | "ghost" | "light" | "outlineDark";
+type Variant =
+  | "primary"
+  | "secondary"
+  | "ghost"
+  | "light"
+  | "outlineDark"
+  | "onDarkPrimary"
+  | "ghostDark";
 type Size = "sm" | "md" | "lg";
 
 const base =
@@ -21,6 +28,10 @@ const variants: Record<Variant, string> = {
     "bg-white text-heading shadow-lift hover:bg-white/90",
   outlineDark:
     "border border-on-dark-hairline text-on-dark hover:bg-white/10",
+  // Signature on-dark CTA: light-blue fill, teal-navy ink.
+  onDarkPrimary:
+    "bg-accent-onDark text-dark shadow-soft hover:bg-accent-onDark/90 hover:shadow-lift",
+  ghostDark: "text-on-dark-secondary hover:text-on-dark hover:bg-white/10",
 };
 
 const sizes: Record<Size, string> = {

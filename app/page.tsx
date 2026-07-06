@@ -1,16 +1,11 @@
-import Link from "next/link";
-import { Section, SectionHeader } from "@/components/ui/section";
-import { Card } from "@/components/ui/card";
-import { Reveal } from "@/components/ui/reveal";
 import { Hero } from "@/components/home/hero";
+import { ToolingStrip } from "@/components/home/tooling-strip";
 import { PathChooser } from "@/components/home/path-chooser";
+import { ServicesMatrix } from "@/components/home/services-matrix";
 import { FounderNote } from "@/components/home/founder-note";
-import { ServiceCard } from "@/components/service-card";
-import { MidCta } from "@/components/mid-cta";
 import { CtaBand } from "@/components/cta-band";
-import { Button } from "@/components/ui/button";
-import { ConsultButton } from "@/components/consult-button";
-import { SERVICES } from "@/lib/services";
+import { Reveal } from "@/components/ui/reveal";
+import { MonoLabel } from "@/components/ui/mono-label";
 
 const PROBLEMS = [
   {
@@ -50,157 +45,148 @@ const STEPS = [
   },
 ];
 
-const PRICING_PREVIEW = [
-  { price: "$79", name: "AI Clarity Consult", note: "45 minutes + one-page AI Leverage Map", href: "/book" },
-  { price: "$299+", name: "Personal Assistant Sprint", note: "Build your first real assistant", href: "/services/personal-ai-assistant" },
-  { price: "$249+", name: "Business Workflow Audit", note: "Find the bottlenecks before building", href: "/services/business-workflow-audit" },
-  { price: "$1,500", name: "Automation Build Sprint", note: "Scoped workflow builds", href: "/services/automation-build-sprint" },
-  { price: "$299/mo", name: "AI Operating System", note: "Ongoing optimization", href: "/services/ai-operating-system" },
-];
+// 2px top-rule accent that cycles across the four steps.
+const STEP_RULES = ["#2a6f97", "#2e7d7d", "#c4976c", "#8fc2dd"];
 
 export default function HomePage() {
   return (
     <>
       <Hero />
+      <ToolingStrip />
 
-      {/* Problem */}
-      <Section tone="surface">
-        <SectionHeader
-          eyebrow="The real AI problem"
-          title="The tools are powerful. The setup is the bottleneck."
-          description="Most people do not need another AI app. They need someone to translate their messy routines into a system that actually works. The value is not the prompt. It is knowing what to automate, what to leave human, and how to make the workflow easy enough to use every week."
-        />
-        <div className="mt-12 grid gap-5 md:grid-cols-3">
-          {PROBLEMS.map((p, i) => (
-            <Reveal key={p.title} delay={i * 80}>
-              <Card variant="cream" className="h-full">
-                <h3 className="font-display text-h3 text-heading">{p.title}</h3>
-                <p className="mt-3 text-pretty text-secondary">{p.body}</p>
-              </Card>
-            </Reveal>
-          ))}
-        </div>
-      </Section>
-
-      {/* Path chooser */}
-      <Section tone="default">
-        <SectionHeader
-          eyebrow="Choose your path"
-          title="Choose the kind of time you want back."
-          description="Two places AI creates immediate leverage. Pick where you feel the drain, and we will meet you there."
-        />
-        <div className="mt-12">
-          <PathChooser />
-        </div>
-      </Section>
-
-      {/* Services preview */}
-      <Section tone="warm">
-        <SectionHeader
-          eyebrow="Services"
-          title="Five focused offers. No bloated agency menu."
-          description="We focus on the two places AI can create immediate leverage, with a clear entry point and an ongoing option. That is the whole menu."
-        />
-        <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {SERVICES.map((service, i) => (
-            <Reveal key={service.slug} delay={(i % 3) * 80}>
-              <ServiceCard service={service} />
-            </Reveal>
-          ))}
-          <Card
-            variant="glassCream"
-            className="flex h-full flex-col justify-center gap-4 border-accent/15 bg-accent-light/50"
-          >
-            <h3 className="font-display text-h3 text-heading">
-              See the full breakdown.
-            </h3>
-            <p className="text-pretty text-secondary">
-              Pricing, deliverables, and exactly who each offer is for.
-            </p>
-            <div>
-              <Button href="/services" variant="secondary" size="md">
-                Compare all services
-              </Button>
-            </div>
-          </Card>
-        </div>
-      </Section>
-
-      {/* Mid-page CTA */}
-      <Section tone="default">
-        <MidCta source="home_mid" />
-      </Section>
-
-      {/* How it works */}
-      <Section tone="surface">
-        <SectionHeader
-          eyebrow="How it works"
-          title="Simple process. Real deliverables."
-          description="No theater, no dashboards nobody uses. We build only what will be used, then test it against your real work."
-        />
-        <div className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-4">
-          {STEPS.map((step) => (
-            <div key={step.n} className="bg-surface p-7">
-              <span className="nums text-xs font-semibold uppercase tracking-[0.16em] text-accent">
-                Step {step.n}
-              </span>
-              <h3 className="mt-4 font-display text-h3 text-heading">
-                {step.title}
-              </h3>
-              <p className="mt-2 text-pretty text-sm text-secondary">
-                {step.body}
+      {/* Problem — darkest */}
+      <section className="border-b border-white/10 bg-darkest">
+        <div className="container-edge py-20">
+          <Reveal>
+            <div className="mx-auto mb-12 max-w-[680px] text-center">
+              <MonoLabel className="text-[11.5px] font-semibold tracking-[0.14em] text-accent-onDark">
+                The real AI problem
+              </MonoLabel>
+              <h2 className="mt-4 text-balance font-display text-[clamp(2rem,1.5rem+1.6vw,2.5rem)] leading-[1.1] tracking-[-0.02em] text-white">
+                The tools are powerful. The setup is the bottleneck.
+              </h2>
+              <p className="mt-4 text-[16px] leading-[1.6] text-white/[0.66]">
+                The value is not the prompt. It is knowing what to automate, what
+                to leave human, and how to make the workflow easy enough to use
+                every week.
               </p>
             </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* Pricing preview */}
-      <Section tone="sand">
-        <SectionHeader
-          eyebrow="Pricing"
-          title="Start cheaper than a traditional AI assessment."
-          description="Clear, productized pricing. You pay tools directly, with no software markup. Final scope is confirmed before any build."
-        />
-        <div className="mt-12 overflow-hidden rounded-2xl border border-hairline bg-surface shadow-soft">
-          <ul className="divide-y divide-hairline">
-            {PRICING_PREVIEW.map((row) => (
-              <li key={row.name}>
-                <Link
-                  href={row.href}
-                  className="flex flex-col gap-1 px-6 py-5 transition-colors duration-150 hover:bg-warm sm:flex-row sm:items-center sm:gap-6"
+            <div className="grid gap-4 md:grid-cols-3">
+              {PROBLEMS.map((problem, i) => (
+                <div
+                  key={problem.title}
+                  className="rounded-[18px] border border-white/10 bg-white/[0.04] p-[30px] backdrop-blur-[6px]"
                 >
-                  <span className="nums w-24 shrink-0 font-display text-h3 text-accent">
-                    {row.price}
-                  </span>
-                  <span className="flex-1">
-                    <span className="block font-medium text-heading">
-                      {row.name}
-                    </span>
-                    <span className="block text-sm text-secondary">
-                      {row.note}
-                    </span>
-                  </span>
-                  <span className="hidden text-accent sm:block" aria-hidden="true">
-                    →
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+                  <MonoLabel className="text-[12px] font-semibold tracking-[0.1em] text-accent-onDark">
+                    {String(i + 1).padStart(2, "0")}
+                  </MonoLabel>
+                  <h3 className="mt-4 font-display text-[22px] leading-snug text-white">
+                    {problem.title}
+                  </h3>
+                  <p className="mt-[10px] text-[14.5px] leading-[1.55] text-white/[0.62]">
+                    {problem.body}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
         </div>
-        <div className="mt-8 flex flex-wrap items-center gap-3">
-          <ConsultButton source="home_pricing" size="md" />
-          <Button href="/pricing" variant="secondary" size="md">
-            See full pricing
-          </Button>
-        </div>
-      </Section>
+      </section>
 
-      {/* Founder note */}
-      <Section tone="default">
-        <FounderNote />
-      </Section>
+      {/* Path chooser — the one light "relief" section */}
+      <section className="border-b border-hairline bg-cream">
+        <div className="container-edge py-20">
+          <Reveal>
+            <div className="mx-auto mb-11 max-w-[640px] text-center">
+              <MonoLabel className="text-[11.5px] font-semibold tracking-[0.14em] text-accent">
+                Choose your path
+              </MonoLabel>
+              <h2 className="mt-4 text-balance font-display text-[clamp(1.9rem,1.4rem+1.6vw,2.375rem)] leading-[1.1] tracking-[-0.02em] text-heading">
+                Choose the kind of time you want back.
+              </h2>
+              <p className="mt-4 text-[16px] leading-[1.6] text-secondary">
+                Two places AI creates immediate leverage. Pick where you feel the
+                drain.
+              </p>
+            </div>
+            <PathChooser />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Services matrix — darkest */}
+      <section className="border-b border-white/10 bg-darkest">
+        <div className="container-edge py-20">
+          <Reveal>
+            <div className="mb-9 flex items-end justify-between gap-6">
+              <div>
+                <MonoLabel className="text-[11.5px] font-semibold tracking-[0.14em] text-accent-onDark">
+                  Services
+                </MonoLabel>
+                <h2 className="mt-[14px] text-balance font-display text-[clamp(1.9rem,1.4rem+1.6vw,2.375rem)] leading-[1.1] tracking-[-0.02em] text-white">
+                  Five focused offers. No bloated menu.
+                </h2>
+              </div>
+              <MonoLabel className="hidden shrink-0 text-[11px] tracking-[0.1em] text-white/40 sm:block">
+                05 / offers
+              </MonoLabel>
+            </div>
+            <ServicesMatrix />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* How it works — dark */}
+      <section className="border-b border-white/10 bg-dark">
+        <div className="container-edge py-20">
+          <Reveal>
+            <div className="mb-10 max-w-[640px]">
+              <MonoLabel className="text-[11.5px] font-semibold tracking-[0.14em] text-accent-onDark">
+                How it works
+              </MonoLabel>
+              <h2 className="mt-[14px] text-balance font-display text-[clamp(1.9rem,1.4rem+1.6vw,2.375rem)] leading-[1.1] tracking-[-0.02em] text-white">
+                Simple process. Real deliverables.
+              </h2>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {STEPS.map((step, i) => (
+                <div
+                  key={step.n}
+                  className="border-t-2 pt-6"
+                  style={{ borderTopColor: STEP_RULES[i] }}
+                >
+                  <MonoLabel className="text-[11px] font-semibold tracking-[0.14em] text-accent-onDark">
+                    Step {step.n}
+                  </MonoLabel>
+                  <h3 className="mt-[14px] font-display text-[20px] leading-snug text-white">
+                    {step.title}
+                  </h3>
+                  <p className="mt-[9px] text-[13.5px] leading-[1.5] text-white/60">
+                    {step.body}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Founder — darkest, with a soft top glow */}
+      <section className="relative overflow-hidden border-b border-white/10 bg-darkest">
+        <div
+          className="pointer-events-none absolute inset-0"
+          aria-hidden="true"
+          style={{
+            backgroundImage:
+              "radial-gradient(50% 90% at 50% 0%, rgba(42,111,151,0.22), transparent 60%)",
+          }}
+        />
+        <div className="container-edge relative py-[88px]">
+          <Reveal>
+            <FounderNote />
+          </Reveal>
+        </div>
+      </section>
 
       <CtaBand />
     </>
