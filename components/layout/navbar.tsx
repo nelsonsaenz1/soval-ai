@@ -9,10 +9,18 @@ import { Logo } from "@/components/logo";
 import { cn } from "@/lib/cn";
 import { trackEvent } from "@/lib/analytics";
 
+/**
+ * Routes rendered on the dark-first "Intelligence" canvas. The navbar adopts its
+ * dark treatment (white links, light-blue accents, teal-navy blur) on these and
+ * keeps the light treatment everywhere else. Extend as more pages migrate.
+ */
+const DARK_ROUTES = new Set<string>(["/"]);
+
 export function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
+  const dark = DARK_ROUTES.has(pathname);
 
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -31,17 +39,21 @@ export function Navbar() {
     };
   }, [open]);
 
+  const solid = scrolled || open;
+
   return (
     <header
       className={cn(
         "sticky top-0 z-50 transition-[background-color,border-color,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]",
-        scrolled || open
-          ? "border-b border-hairline bg-cream/85 backdrop-blur-md supports-[backdrop-filter]:bg-cream/70"
-          : "border-b border-transparent bg-transparent",
+        !solid && "border-b border-transparent bg-transparent",
+        solid &&
+          (dark
+            ? "border-b border-white/10 bg-[rgba(6,27,36,0.72)] backdrop-blur-md"
+            : "border-b border-hairline bg-cream/85 backdrop-blur-md supports-[backdrop-filter]:bg-cream/70"),
       )}
     >
       <nav
-        className="container-edge flex h-16 items-center justify-between gap-4"
+        className="container-edge flex h-[70px] items-center justify-between gap-4"
         aria-label="Primary"
       >
         <Link
@@ -49,7 +61,7 @@ export function Navbar() {
           aria-label={`${BRAND.name} home`}
           className="rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
-          <Logo priority />
+          <Logo onDark={dark} />
         </Link>
 
         <div className="hidden items-center gap-1 lg:flex">
@@ -64,9 +76,13 @@ export function Navbar() {
                 aria-current={active ? "page" : undefined}
                 className={cn(
                   "rounded-pill px-3.5 py-2 text-sm font-medium transition-colors duration-150",
-                  active
-                    ? "text-accent"
-                    : "text-secondary hover:text-heading hover:bg-warm",
+                  dark
+                    ? active
+                      ? "text-accent-onDark"
+                      : "text-on-dark-secondary hover:text-accent-onDark"
+                    : active
+                      ? "text-accent"
+                      : "text-secondary hover:text-heading hover:bg-warm",
                 )}
               >
                 {item.label}
@@ -76,11 +92,12 @@ export function Navbar() {
         </div>
 
         <div className="hidden items-center gap-2 lg:flex">
-          <Button href="/quiz" variant="ghost" size="sm">
+          <Button href="/quiz" variant={dark ? "ghostDark" : "ghost"} size="sm">
             {BRAND.quizCta.label}
           </Button>
           <Button
             href={BRAND.navCta.href}
+            variant={dark ? "onDarkPrimary" : "primary"}
             size="sm"
             onClick={() => trackEvent("consult_clicked", { source: "nav" })}
           >
@@ -90,7 +107,12 @@ export function Navbar() {
 
         <button
           type="button"
-          className="inline-flex size-10 items-center justify-center rounded-pill text-heading hover:bg-warm lg:hidden"
+          className={cn(
+            "inline-flex size-10 items-center justify-center rounded-pill lg:hidden",
+            dark
+              ? "text-on-dark hover:bg-white/10"
+              : "text-heading hover:bg-warm",
+          )}
           aria-expanded={open}
           aria-controls="mobile-menu"
           aria-label={open ? "Close menu" : "Open menu"}
@@ -103,7 +125,10 @@ export function Navbar() {
       {open ? (
         <div
           id="mobile-menu"
-          className="lg:hidden border-t border-hairline bg-cream"
+          className={cn(
+            "border-t lg:hidden",
+            dark ? "border-white/10 bg-[#061b24]" : "border-hairline bg-cream",
+          )}
         >
           <div className="container-edge flex flex-col gap-1 py-4">
             {BRAND.nav.map((item) => (
@@ -111,17 +136,28 @@ export function Navbar() {
                 key={item.href}
                 href={item.href}
                 onClick={closeMenu}
-                className="rounded-md px-3 py-2.5 text-base font-medium text-heading hover:bg-warm"
+                className={cn(
+                  "rounded-md px-3 py-2.5 text-base font-medium",
+                  dark
+                    ? "text-on-dark-secondary hover:bg-white/5 hover:text-on-dark"
+                    : "text-heading hover:bg-warm",
+                )}
               >
                 {item.label}
               </Link>
             ))}
             <div className="mt-3 flex flex-col gap-2">
-              <Button href="/quiz" variant="secondary" size="md" onClick={closeMenu}>
+              <Button
+                href="/quiz"
+                variant={dark ? "outlineDark" : "secondary"}
+                size="md"
+                onClick={closeMenu}
+              >
                 {BRAND.quizCta.label}
               </Button>
               <Button
                 href={BRAND.navCta.href}
+                variant={dark ? "onDarkPrimary" : "primary"}
                 size="md"
                 onClick={() => {
                   trackEvent("consult_clicked", { source: "nav_mobile" });

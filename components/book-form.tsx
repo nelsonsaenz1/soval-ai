@@ -57,6 +57,8 @@ export function BookForm() {
     const sp = new URLSearchParams(window.location.search);
     const service = sp.get("service") ?? "";
     const band = sp.get("band") ?? "";
+    // Free-text intent carried from the hero command bar (e.g. "summarize my inbox").
+    const q = sp.get("q") ?? "";
     let domain = "";
     try {
       const raw = sessionStorage.getItem("quizResult");
@@ -67,6 +69,7 @@ export function BookForm() {
     /* eslint-disable react-hooks/set-state-in-effect -- one-time mount sync from the URL + sessionStorage, which cannot run during render */
     if (service || band) setPrefill({ band, service });
     if (domain) setValues((v) => (v.focus ? v : { ...v, focus: domain }));
+    if (q) setValues((v) => (v.bottleneck ? v : { ...v, bottleneck: q }));
     /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 

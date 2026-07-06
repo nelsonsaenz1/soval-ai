@@ -43,11 +43,20 @@
   --color-accent-warm-hover: #b08558;
   --color-accent-teal: #2e7d7d;
 
-  /* Type — DM Serif Display headings, DM Sans body (loaded via next/font) */
+  /* Signature on-dark accents (dark-first "Intelligence" system) */
+  --color-accent-onDark: #8fc2dd; /* eyebrows, on-dark CTAs, links, prices */
+  --color-signal: #7fd1a8; /* live / available status dot */
+  --color-footer: #03141b; /* deepest near-black footer */
+
+  /* Type — DM Serif Display headings, DM Sans body, Space Grotesk wordmark,
+     JetBrains Mono micro-labels (all loaded via next/font) */
   --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Roboto, sans-serif;
   --font-serif: var(--font-dm-serif), Georgia, Cambria, "Times New Roman", serif;
-  --font-mono: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, monospace;
+  --font-grotesk: var(--font-space-grotesk), ui-sans-serif, system-ui,
+    sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular",
+    "SF Mono", Menlo, monospace;
 
   /* Fluid display scale — editorial, tight tracking, balanced */
   --text-display: clamp(2.6rem, 1.1rem + 4.6vw, 4.6rem);
@@ -188,7 +197,16 @@ body {
     display: none;
   }
   .eyebrow--on-dark {
-    color: #8fc2dd;
+    color: var(--color-accent-onDark);
+  }
+
+  /* Mono micro-label (JetBrains Mono, uppercase, tracked) — the dark-first
+     system's engineered kicker. Size/color set by the caller. */
+  .mono-label {
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    line-height: 1;
   }
 
   /* Tabular numerics for prices, scores, stat figures */
@@ -247,6 +265,67 @@ body {
       );
   }
 
+  /* Dark-first hero mesh — three radials over the deepest teal-navy */
+  .mesh-hero {
+    background-color: var(--color-darkest);
+    background-image: radial-gradient(
+        50% 60% at 20% 0%,
+        rgba(42, 111, 151, 0.5),
+        transparent 62%
+      ),
+      radial-gradient(
+        46% 55% at 92% 20%,
+        rgba(46, 125, 125, 0.34),
+        transparent 60%
+      ),
+      radial-gradient(
+        60% 70% at 70% 118%,
+        rgba(196, 151, 108, 0.16),
+        transparent 62%
+      );
+  }
+
+  /* Glowing CTA-band mesh (top-center + bottom-right) over teal-navy */
+  .mesh-cta {
+    background-color: var(--color-dark);
+    background-image: radial-gradient(
+        58% 70% at 50% 0%,
+        rgba(42, 111, 151, 0.45),
+        transparent 60%
+      ),
+      radial-gradient(
+        52% 52% at 92% 100%,
+        rgba(46, 125, 125, 0.28),
+        transparent 58%
+      );
+  }
+
+  /* Hairline "blueprint" grid overlay (absolute, masked toward center-top).
+     --grid sets the cell size; place inside a `relative` dark surface. */
+  .blueprint-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 0.035) 1px,
+        transparent 1px
+      ),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: var(--grid, 52px) var(--grid, 52px);
+    -webkit-mask-image: radial-gradient(80% 80% at 50% 20%, #000, transparent);
+    mask-image: radial-gradient(80% 80% at 50% 20%, #000, transparent);
+  }
+  .blueprint-grid--cta {
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 0.03) 1px,
+        transparent 1px
+      ),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+    -webkit-mask-image: radial-gradient(70% 80% at 50% 30%, #000, transparent);
+    mask-image: radial-gradient(70% 80% at 50% 30%, #000, transparent);
+  }
+
   /* Reveal-on-scroll (opacity + small translate only) */
   .reveal {
     opacity: 0;
@@ -301,6 +380,76 @@ body {
     animation: bar-fill 1.1s var(--ease-out) 0.3s both;
   }
 
+  /* Dark-first ambient motion (all GPU-only: transform/opacity).
+     - sv-stream: one-time staggered entrance for the hero stat cells
+     - sv-pulse:  status / eyebrow dot
+     - sv-blink:  command-bar caret
+     - sv-float:  gentle vertical drift of the orbit mark
+     - sv-orbit:  slow rotation of the orbit mark
+     All collapse to their resting state under prefers-reduced-motion. */
+  @keyframes sv-stream {
+    from {
+      opacity: 0;
+      transform: translateY(7px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes sv-pulse {
+    0%,
+    100% {
+      opacity: 0.35;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  @keyframes sv-blink {
+    0%,
+    49% {
+      opacity: 1;
+    }
+    50%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes sv-float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+  @keyframes sv-orbit {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .sv-stream {
+    animation: sv-stream 0.6s var(--ease-out) both;
+  }
+  .sv-pulse {
+    animation: sv-pulse 2.4s ease-in-out infinite;
+  }
+  .sv-blink {
+    animation: sv-blink 1.1s step-end infinite;
+  }
+  .sv-float {
+    animation: sv-float 9s ease-in-out infinite;
+  }
+  .sv-orbit {
+    transform-origin: center;
+    animation: sv-orbit 60s linear infinite;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .reveal {
       opacity: 1;
@@ -308,6 +457,18 @@ body {
     }
     .bar-fill {
       transform: scaleX(var(--fill, 1));
+    }
+    /* Stop ambient loops; settle entrances at their end state */
+    .sv-stream,
+    .sv-pulse,
+    .sv-blink,
+    .sv-float,
+    .sv-orbit {
+      animation: none !important;
+    }
+    .sv-stream {
+      opacity: 1;
+      transform: none;
     }
   }
 }
