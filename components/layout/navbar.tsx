@@ -10,11 +10,15 @@ import { cn } from "@/lib/cn";
 import { trackEvent } from "@/lib/analytics";
 
 /**
- * Routes rendered on the dark-first "Intelligence" canvas. The navbar adopts its
- * dark treatment (white links, light-blue accents, teal-navy blur) on these and
- * keeps the light treatment everywhere else. Extend as more pages migrate.
+ * Routes that render the navbar on its dark treatment (white links, light-blue
+ * accents, teal-navy blur). The bar is transparent at the top and sits *above*
+ * the page (not over it), so a dark treatment only works where the page top is
+ * itself dark AND flush to the nav. The homepage nav sits over the cream body,
+ * so it uses the light treatment (navy wordmark + dark links) to stay legible —
+ * see the request to keep the logo navy on the white top bar. Add a route here
+ * only once its top bar is genuinely dark behind the nav.
  */
-const DARK_ROUTES = new Set<string>(["/"]);
+const DARK_ROUTES = new Set<string>([]);
 
 export function Navbar() {
   const pathname = usePathname();
